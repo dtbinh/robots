@@ -1,14 +1,15 @@
 
-package rabat;
+package rabat.start;
 
-//import java.util.Timer;
-
-//import lejos.nxt.I2CPort;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.navigation.DifferentialPilot;
-
+/**
+ * move near the walls, using differential pilot
+ * @author Ohad Cohen & Ron Cohen
+ *
+ */
 public class Hello {
 	
 //	private static final int speed = 150;

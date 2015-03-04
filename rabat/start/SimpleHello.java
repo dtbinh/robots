@@ -1,8 +1,13 @@
-package rabat;
+package rabat.start;
 
 import lejos.nxt.*;
 import lejos.robotics.RegulatedMotor;
 
+/**
+ * move near the walls, without using pilot
+ * @author Ohad Cohen & Ron Cohen
+ *
+ */
 public class SimpleHello {
 
 	private static final RegulatedMotor motorR = Motor.B;
@@ -11,11 +16,11 @@ public class SimpleHello {
 	private static final int rotatDist = 25;
 	private static final int errorDist = 3;	
 		
-	private static final UltrasonicSensor sensR = new UltrasonicSensor(SensorPort.S1);
-	private static final UltrasonicSensor sensF = new UltrasonicSensor(SensorPort.S4);
+	private static final UltrasonicSensor sensR = new UltrasonicSensor(SensorPort.S4);
+	private static final UltrasonicSensor sensF = new UltrasonicSensor(SensorPort.S1);
 
 	private static double wheelDiameter = 56;
-	private static double wheelDist = 105;
+	private static double wheelDist = 119;
 	private static int rotateAngle = (int)(360*wheelDist/(wheelDiameter*2));
 	
 	
@@ -24,7 +29,7 @@ public class SimpleHello {
 		for(int i=0;i<times; i++) {
 			motor.stop(true);
 			motor.setSpeed(speed/10);
-			LCD.drawString(print, 1, 1);
+			LCD.drawString(print + times + "                    ", 1, 1);
 			motor.forward();
 		}
 		motor.stop(true);
@@ -33,11 +38,12 @@ public class SimpleHello {
 	}
 	
 	public static void main(String[] args) {
-		final int avgDistance = 15;// sensR.getDistance();
+		final int avgDistance = 15;//sensR.getDistance();
 		final int maxDistance = avgDistance + errorDist;
 		final int minDistance = avgDistance - errorDist;
+		int dist;
 		
-		final int speed = (int) motorL.getMaxSpeed()/2;
+		final int speed = (int) (3*motorL.getMaxSpeed()/4);
 		final int rotateSpeed = (speed)/3;
 		
 		LCD.drawString("startint at speed "+speed ,1,2);
@@ -66,15 +72,16 @@ public class SimpleHello {
 				motorR.forward();
 			}
 			
-			if( sensR.getDistance() > maxDistance ){
-				fix(motorR, "fix right", sensR.getDistance() - avgDistance);
+			if( (dist = sensR.getDistance()) > maxDistance ){
+				fix(motorR, "fix right", dist - avgDistance);
 			}
 			
-			if( sensR.getDistance() < minDistance){
-				fix(motorL, "fix left",  avgDistance - sensR.getDistance());
+			if( dist < minDistance){
+				fix(motorL, "fix left",  avgDistance - dist);
 			}
 
 		}
+		
 		LCD.drawString("stoping...", 1, 1);
 		motorL.stop(true);
 		motorR.stop(true);
